@@ -1,44 +1,65 @@
 
 const db = require("../models");
-const config = require("../config/auth.config");
 const Token = db.token;
 
 const Op = db.Sequelize.Op;
 
 var bcrypt = require("bcryptjs");
 
-exports.register = (req, res) => {
+
+exports.create = (req, res) => {
+  	// Save User to Database
+  	Token.create({
+	    chatid: req.body.chatid,
+	    token: req.body.token,
+	    password: bcrypt.hashSync("req.body.password", 8)
+  	})
+    .then(user => {
+      	res.send({ message: "Token registered successfully!" });
+    })
+    .catch(err => {
+      	res.status(500).send({ message: err.message });
+    });
+};
+
+exports.registerToken = (req, res) => {
    	Token.update(
-   	{
-     	chatid: req.body.chatid,
-    	token: req.body.token
-  	},
-  	{
-   	 	where: {
-       		id: req.tokenId
-     	}
-  	}, 
+	   	{
+	     	chatid: req.body.chatid,
+	    	token: req.body.token
+	  	},
+	  	{
+	   	 	where: {
+	       		id: req.tokenId
+	     	}
+	  	}, 
    	)
     .then(token => {
-      res.send({ message: "Token updated successfully!" });
+    	if (!token) {
+	      	return res.status(404).send({ message: "Token Not found." });
+	    }
+      	res.send({ message: "Token updated successfully!" });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
 };
 
-exports.update = (req, res) => {
+exports.updatePassword = (req, res) => {
   	Token.update(
-   	{
-     	password: bcrypt.hashSync(req.body.newpassword, 8)
-  	},
-  	{
-   	 	where: {
-       		id: req.tokenId
-     	}
-  	}, 
+	   	{
+	     	password: bcrypt.hashSync(req.body.newpassword, 8)
+	  	},
+	  	{
+	   	 	where: {
+	       		id: req.tokenId
+	     	}
+	  	}, 
    	)
     .then(token => {
+    	if (!token) {
+	      	return res.status(404).send({ message: "Token Not found." });
+	    }
       	res.send({ message: "Password updated successfully!" });
     })
     .catch(err => {
@@ -57,7 +78,7 @@ exports.getData = (req, res) => {
 	});
 };
 
-export.postMessage = (req, res) => {
+exports.postMessage = (req, res) => {
 	Token.findOne({
 	  	order: [['id', 'DESC']],
 	  	limit: 1

@@ -1,5 +1,5 @@
 const { verifyPassword } = require("../middleware");
-const controller = require("../controllers/user.controller");
+const controller = require("../controllers/token.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -9,17 +9,18 @@ module.exports = function(app) {
     );
     next();
   });
-
+  // Update chatid and token
   app.post(
     "/api/token/register",
     [verifyPassword.checkPassword],
-    controller.register
+    controller.registerToken
   );
-  // Update chatid and token
-  app.post("/api/token/update",[verifyPassword.checkPassword], controller.update);
   // Update password
-  app.get("/api/token/get",[verifyPassword.checkPassword], controller.getData);
+  app.post("/api/token/update",[verifyPassword.checkPassword], controller.updatePassword);
   // Get chatid and token
-  app.post("/api/token/post", controller.postMessage);
+  app.get("/api/token/get",[verifyPassword.checkPassword], controller.getData);
   // Send message
+  app.post("/api/token/post", controller.postMessage);
+  // Token record creation
+  app.post("/api/token/create", controller.create);
 };
