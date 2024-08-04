@@ -12,7 +12,7 @@ exports.create = (req, res) => {
   	Token.create({
 	    chatid: req.body.chatid,
 	    token: req.body.token,
-	    password: bcrypt.hashSync("req.body.password", 8)
+	    password: bcrypt.hashSync(req.body.password, 8)
   	})
     .then(user => {
       	res.send({ message: "Token registered successfully!" });
@@ -84,6 +84,7 @@ exports.postMessage = (req, res) => {
 	  	limit: 1
 	})
 	.then(token => {
+		console.log(req.body.message);
 		if (!token) {
 	        return res.status(404).send({ message: "Token not found." });
 	    }

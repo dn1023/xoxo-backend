@@ -12,6 +12,8 @@ checkPassword = (req, res, next) => {
       //   return res.status(404).send({ message: "Password not found." });
       // }
       // req.tokenId = token.id;
+      console.log(req.body.password);
+      console.log(token.password);
       var passwordIsValid = bcrypt.compareSync(
         req.body.password,
         token.password
@@ -22,6 +24,7 @@ checkPassword = (req, res, next) => {
           message: "Invalid Password!"
         });
       }
+      req.tokenId = token.id;
       next();
     })
     .catch(err => {

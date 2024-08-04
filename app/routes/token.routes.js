@@ -18,9 +18,10 @@ module.exports = function(app) {
   // Update password
   app.post("/api/token/update",[verifyPassword.checkPassword], controller.updatePassword);
   // Get chatid and token
-  app.get("/api/token/get",[verifyPassword.checkPassword], controller.getData);
+  app.post("/api/token/get",[verifyPassword.checkPassword], controller.getData);
   // Send message
   app.post("/api/token/post", controller.postMessage);
+  app.post("/api/token/postWeb", [verifyPassword.checkPassword], controller.postMessage);
   // Token record creation
   app.post("/api/token/create", controller.create);
 };
