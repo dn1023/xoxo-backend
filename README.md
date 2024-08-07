@@ -2,7 +2,7 @@
 
 ## SQL.
 ```
-INSERT INTO employees (token, chatID, password) VALUES ('temp', 'chatID', '$2a$08$57E9475FMRtleESj55Xg7O73JzaZ7iDadk0ZG8/9f.PQnox6bXoYW');
+INSERT INTO tokens (token, chatID, password) VALUES ('temp', 'chatID', '$2a$08$57E9475FMRtleESj55Xg7O73JzaZ7iDadk0ZG8/9f.PQnox6bXoYW');
 ```
 
 ## Password(123).
